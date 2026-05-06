@@ -17,11 +17,13 @@
             text-align: center;
             word-break: keep-all;
             background-color: #ffdef2;
+            /* 클릭 시 파란색 하이라이트 방지 */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* 배경 무지개 그라데이션 (더 빠르게) */
+        /* 배경 무지개 그라데이션 */
         .bg-animated {
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb, #d4fc79);
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb, #d4fc79);
             background-size: 600% 600%;
             animation: gradientBG 8s linear infinite;
         }
@@ -32,7 +34,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 인트로 화면 (더 화려하게) */
+        /* 인트로 화면 */
         #intro-screen {
             position: fixed;
             top: 0;
@@ -61,7 +63,7 @@
         /* 메인 컨텐츠 숨김 */
         #main-content { display: none; }
 
-        /* 상단 움직이는 바 (CSS로 구현하여 확실히 움직이게) */
+        /* 상단 움직이는 바 */
         .marquee-container {
             width: 100%;
             overflow: hidden;
@@ -104,17 +106,15 @@
             to { filter: hue-rotate(360deg); }
         }
 
-        /* 미친듯이 깜빡이는 텍스트 */
         .blink-crazy {
             animation: blinker 0.2s linear infinite;
             color: #ff007f;
             font-size: 2.2rem;
-            text-shadow: 2px 2px #fff, -2px -2px #fff;
+            text-shadow: 2px 2px #fff;
         }
 
         @keyframes blinker { 50% { opacity: 0; } }
 
-        /* 카드 박스 디자인 */
         .content-box {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -126,18 +126,15 @@
             box-shadow: 0 0 20px rgba(255, 102, 178, 0.3);
         }
 
-        /* 짤 애니메이션들 */
         .meme { width: 100%; border-radius: 15px; margin: 10px 0; border: 2px solid #fff; }
         .shake { animation: shake-anim 0.5s infinite; }
         @keyframes shake-anim {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
             50% { transform: translate(-1px, 2px) rotate(-1deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
-        /* 미니게임 버튼 (모바일 최적화 및 화려함) */
         .game-section {
             height: 250px;
             position: relative;
@@ -168,24 +165,26 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* 케이크 광클 */
-        #cake { font-size: 5rem; cursor: pointer; user-select: none; display: inline-block; animation: floating 2s infinite; }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+        #cake { font-size: 5rem; cursor: pointer; user-select: none; display: inline-block; transition: transform 0.1s; }
 
-        /* 폭죽 및 이모지 요소 */
-        .confetti, .emoji-particle {
+        /* 폭죽 조각 스타일 */
+        .confetti {
             position: fixed;
             pointer-events: none;
             z-index: 10000;
+            border-radius: 50%;
+        }
+        
+        .emoji-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
         }
     </style>
 </head>
-<body class="bg-animated">
+<body class="bg-animated" onclick="burstConfetti(event)">
 
-    <div id="intro-screen" onclick="startParty()">
+    <div id="intro-screen" onclick="startParty(event)">
         <div class="gift-box">🎁</div>
         <div class="blink-crazy" style="font-size: 2rem;">혜린쌤!! 터치 금지!!</div>
         <p style="color: #ff007f; font-weight: bold;">(뻥이에요 빨리 눌러주세요!!)</p>
@@ -235,12 +234,12 @@
         <div class="game-section">
             <h2 style="font-size: 1.2rem;">🎮 혜린쌤, 퇴사 하실거예요? 🎮</h2>
             <button id="runaway-btn" class="btn" onmouseover="runAway(this)" onclick="runAway(this)">네!!</button>
-            <button id="stay-btn" class="btn" onclick="stayForever()">아니요 평생<br>함께할게요💖</button>
+            <button id="stay-btn" class="btn" onclick="stayForever(event)">아니요 평생<br>함께할게요💖</button>
         </div>
 
         <div class="content-box" style="border-color: #f2d74e;">
             <h2>🎂 당신을 위한 케이크 🎂</h2>
-            <div id="cake" onclick="growCake()">🎂</div>
+            <div id="cake" onclick="growCake(event)">🎂</div>
             <p id="click-count" style="font-size: 1.2rem;">클릭: 0</p>
         </div>
     </div>
@@ -249,23 +248,30 @@
 
     <script>
         // 파티 시작!
-        function startParty() {
+        function startParty(event) {
             document.getElementById('intro-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
             
-            // 초기 폭죽 대폭발
-            for(let i=0; i<10; i++) {
-                setTimeout(createConfetti, i * 200);
+            // 입장 축포 (여러 군데서 터짐)
+            for(let i=0; i<5; i++) {
+                setTimeout(() => {
+                    createConfetti(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+                }, i * 200);
             }
             
             // 이모지 비 내리기 시작
-            setInterval(createEmoji, 300);
+            setInterval(createEmojiRain, 400);
         }
 
-        // 폭죽 효과 (더 화려하게)
-        function createConfetti() {
-            const colors = ['#ff007f', '#ffea00', '#00e5ff', '#ff4b4b', '#4cd137', '#ffffff', '#ff9900'];
-            for (let i = 0; i < 50; i++) {
+        // 클릭할 때마다 폭죽 터지는 함수
+        function burstConfetti(e) {
+            createConfetti(e.clientX, e.clientY);
+        }
+
+        // 폭죽 생성 로직
+        function createConfetti(x, y) {
+            const colors = ['#ff007f', '#ffea00', '#00e5ff', '#ff4b4b', '#4cd137', '#ffffff', '#ff9900', '#bc13fe'];
+            for (let i = 0; i < 40; i++) {
                 const p = document.createElement('div');
                 p.classList.add('confetti');
                 document.body.appendChild(p);
@@ -274,24 +280,24 @@
                 p.style.width = size;
                 p.style.height = size;
                 p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                p.style.left = '50vw';
-                p.style.top = '50vh';
-                p.style.borderRadius = '50%';
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
 
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 200 + 100;
+                const velocity = Math.random() * 150 + 50;
                 const tx = Math.cos(angle) * velocity;
                 const ty = Math.sin(angle) * velocity;
 
                 p.animate([
                     { transform: 'translate(0, 0) scale(1)', opacity: 1 },
                     { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
-                ], { duration: 1500, easing: 'out-expo' }).onfinish = () => p.remove();
+                ], { duration: 1000 + Math.random() * 500, easing: 'cubic-bezier(0, .9, .57, 1)' })
+                .onfinish = () => p.remove();
             }
         }
 
-        // 날아다니는 이모지
-        function createEmoji() {
+        // 배경 이모지 비
+        function createEmojiRain() {
             const emojis = ['✨', '💖', '🎉', '👑', '🎂', '💸', '🐶', '🫶', '🔥', '🌈'];
             const e = document.createElement('div');
             e.classList.add('emoji-particle');
@@ -304,32 +310,38 @@
             e.animate([
                 { top: '-50px', transform: 'rotate(0deg)' },
                 { top: '110vh', transform: `rotate(${Math.random() * 360}deg)` }
-            ], { duration: Math.random() * 2000 + 3000, easing: 'linear' }).onfinish = () => e.remove();
+            ], { duration: Math.random() * 2000 + 3000, easing: 'linear' })
+            .onfinish = () => e.remove();
         }
 
-        // 도망치는 버튼
         function runAway(btn) {
             btn.style.left = Math.random() * 70 + 15 + '%';
             btn.style.top = Math.random() * 70 + 15 + '%';
         }
 
-        function stayForever() {
+        function stayForever(e) {
             alert('역시 혜린쌤!! 평생 교환실과 함께하는걸로 탕탕탕!! 💖💖💖');
-            for(let i=0; i<3; i++) createConfetti();
+            createConfetti(e.clientX, e.clientY);
         }
 
-        // 케이크 키우기
         let count = 0;
-        function growCake() {
+        function growCake(e) {
             count++;
             const cake = document.getElementById('cake');
-            cake.style.transform = `scale(${1 + count * 0.15})`;
+            cake.style.transform = `scale(${1 + count * 0.1})`;
             document.getElementById('click-count').innerText = `클릭: ${count}`;
+            
+            // 클릭할 때마다 소규모 폭죽
+            if(count % 3 === 0) createConfetti(e.clientX, e.clientY);
+
             if(count >= 15) {
                 cake.innerText = '🎊HAPPY BIRTHDAY🎊';
                 cake.style.transform = 'scale(1)';
                 cake.style.fontSize = '2rem';
-                createConfetti();
+                // 대형 축포
+                for(let i=0; i<3; i++) {
+                    setTimeout(() => createConfetti(e.clientX, e.clientY), i * 100);
+                }
                 count = 0;
             }
         }
