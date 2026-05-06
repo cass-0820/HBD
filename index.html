@@ -51,14 +51,20 @@
             background: radial-gradient(circle, #ffffff 0%, #ff99cc 100%);
         }
 
-        .gift-box {
-            font-size: 8rem;
-            animation: bounce 0.5s ease infinite alternate;
+        /* ✨ 새로 추가된 인트로 동숲 이미지 스타일 ✨ */
+        .intro-image {
+            width: 85%;
+            max-width: 400px;
+            border-radius: 20px;
+            border: 6px solid #fff; /* 하얀색 예쁜 테두리 */
+            box-shadow: 0 10px 30px rgba(255, 0, 127, 0.3); /* 핑크빛 그림자 */
+            animation: floating-intro 2.5s ease-in-out infinite; /* 둥둥 떠다니는 효과 */
+            margin-bottom: 20px;
         }
 
-        @keyframes bounce {
-            from { transform: scale(1); }
-            to { transform: scale(1.2) rotate(5deg); }
+        @keyframes floating-intro {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
         }
 
         /* 메인 컨텐츠 숨김 */
@@ -210,9 +216,9 @@
     </audio>
 
     <div id="intro-screen" onclick="startParty(event)">
-        <div class="gift-box">🎁</div>
-        <div class="blink-crazy" style="font-size: 2rem;">혜린쌤!! 터치 금지!!</div>
-        <p style="color: #ff007f; font-weight: bold;">(뻥이에요 빨리 눌러주세요!!)</p>
+        <img src="HBD1.png" alt="동물의 숲 방송" class="intro-image">
+        <div class="blink-crazy" style="font-size: 1.8rem;">혜린쌤!! 터치 금지!!</div>
+        <p style="color: #ff007f; font-weight: bold; font-size: 1.2rem; margin-top: 10px;">(뻥임ㅎ 화면을 아무데나 꾹 눌러주세요!!)</p>
     </div>
 
     <div id="main-content">
