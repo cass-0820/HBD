@@ -1,5 +1,3 @@
-**이 HTML에서 메인 화면이 처음에 나오고, 화면을 눌렀을때 폭죽이 터지면서 본문이 출력 되었으면 좋겠어.**
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,22 +7,56 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
-        body {
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             font-family: 'Jua', sans-serif;
+            overflow-x: hidden;
+            background-color: #fecfef;
+        }
+
+        /* 배경 그라데이션 애니메이션 */
+        .bg-animated {
             background: linear-gradient(45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb, #fff1eb);
             background-size: 400% 400%;
             animation: gradientBG 5s ease infinite;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            text-align: center;
-            color: #333;
         }
 
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* 인트로 화면 */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: radial-gradient(circle, #fff1eb 0%, #ff9a9e 100%);
+        }
+
+        .click-me-text {
+            font-size: 3rem;
+            color: #ff007f;
+            text-shadow: 3px 3px #fff;
+            animation: pulse 1s infinite;
+        }
+
+        /* 메인 컨텐츠 (처음엔 숨김) */
+        #main-content {
+            display: none;
+            padding-bottom: 50px;
         }
 
         /* 눈뽕 무지개 텍스트 */
@@ -43,57 +75,36 @@
             to { filter: hue-rotate(360deg); }
         }
 
-        /* 미친듯이 깜빡이는 효과 */
         .blink-crazy {
             animation: blinker 0.3s linear infinite;
             color: #ff007f;
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin: 10px 0;
-            text-shadow: 2px 2px #fff;
+            text-shadow: 3px 3px #fff;
         }
 
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
+        @keyframes blinker { 50% { opacity: 0; } }
 
-        /* 둥둥 떠다니는 효과 */
-        .floating {
-            animation: floating 2s ease-in-out infinite;
-        }
-
+        .floating { animation: floating 2s ease-in-out infinite; }
         @keyframes floating {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
         }
 
-        /* 미친듯이 흔들리는 짤 효과 */
-        .shake-crazy {
-            animation: shake 0.5s infinite;
-        }
-
+        .shake-crazy { animation: shake 0.5s infinite; }
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
             20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
             40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
             60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
             80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
-        /* 부드럽게 커졌다 작아지는 효과 */
-        .pulse-img {
-            animation: pulse-img 1.5s infinite;
-        }
-
-        @keyframes pulse-img {
+        .pulse { animation: pulse 1s infinite; }
+        @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
 
@@ -106,6 +117,7 @@
             max-width: 800px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border: 5px dashed #ff9a9e;
+            position: relative;
         }
 
         .meme {
@@ -123,7 +135,15 @@
             vertical-align: middle;
         }
 
-        /* 미니게임 1: 도망치는 버튼 */
+        marquee {
+            font-size: 2rem;
+            color: #fff;
+            background: #ff007f;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        /* 미니게임 섹션 */
         .game-section {
             margin-top: 50px;
             padding: 20px;
@@ -140,36 +160,20 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.1s;
-        }
-
-        #runaway-btn {
-            background-color: #ff4b4b;
-            color: white;
             position: absolute;
-            top: 50%;
-            left: 20%;
-            transform: translate(-50%, -50%);
         }
 
-        #stay-btn {
-            background-color: #4cd137;
-            color: white;
-            font-size: 1.8rem;
-            position: absolute;
-            top: 50%;
-            left: 70%;
-            transform: translate(-50%, -50%);
-            animation: pulse-img 1s infinite;
-        }
+        #runaway-btn { background-color: #ff4b4b; color: white; top: 50%; left: 20%; transform: translate(-50%, -50%); }
+        #stay-btn { background-color: #4cd137; color: white; top: 50%; left: 70%; transform: translate(-50%, -50%); }
 
-        /* 미니게임 2: 클릭하는 케이크 */
-        #cake {
-            font-size: 6rem;
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.1s;
-            display: inline-block;
+        #cake { font-size: 6rem; cursor: pointer; user-select: none; display: inline-block; transition: 0.1s; }
+
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            z-index: 10000;
+            pointer-events: none;
         }
 
         .easter-egg {
@@ -180,186 +184,172 @@
             color: rgba(0,0,0,0.2);
             cursor: pointer;
         }
-
-        marquee {
-            font-size: 2rem;
-            color: #fff;
-            background: #ff007f;
-            padding: 10px;
-            font-weight: bold;
-        }
-
-        .confetti {
-            position: fixed;
-            width: 15px;
-            height: 15px;
-            background-color: #f2d74e;
-            opacity: 0;
-            z-index: 1000;
-        }
     </style>
 </head>
-<body>
+<body class="bg-animated">
 
-    <marquee scrollamount="25">🚨삐용삐용🚨 혜린쌤 탄신일!! 구원자 등장!! 모두 길을 비켜라!! 🚨삐용삐용🚨 병원의 빛! 병원의 소금!</marquee>
-
-    <div class="content-box floating">
-        <img src="박수.png" alt="박수로 시작할까요?" class="meme floating" style="max-width: 300px;">
-        
-        <h1 class="blink-crazy">🎉 혜린쌤 생일 축하해요! 🎉</h1>
-        
-        <img src="오너날.png" alt="오늘 너의 날이다!" class="meme pulse-img">
-
-        <p class="rainbow-text">
-            제가 감히 존경하고, 사랑하고, 아끼고, 좋아하고, 어쩌고,<br>
-            우러러보고, 신뢰하고, 애정하고, 의지하고, 숭배하고, 저쩌고,<br>
-            평생을 바치고, 찬양하고,<br>
-            내 삶의 빛이자 소금이며 구원자...✨<br>
-            <img src="천강쥐.jpg" alt="천사 강아지" class="meme-small floating">
-        </p>
-        
-        <img src="무한하트.png" alt="무한하트 빔" class="meme shake-crazy">
-
-        <h2 style="font-size: 2.5rem; color: #ff4b4b; text-shadow: 2px 2px #fff; margin-top: 30px;">
-            혜린쌤 없는 병원?<br>
-            🤷‍♀️상상할 수 없슴🤷‍♂️<br>
-            <span style="background: yellow; border-radius: 10px; padding: 0 10px;">🌟혜린쌤이 복지다🌟</span>
-        </h2>
-
-        <p style="font-size: 1.5rem; color: #555; background: #eee; border-radius: 10px; padding: 10px;">
-            아무튼 혜린쌤의 생일을 진심으로 축하합니다. 💖
-        </p>
+    <div id="intro-screen" onclick="startParty()">
+        <div class="floating" style="font-size: 8rem;">🎁</div>
+        <div class="click-me-text">혜린쌤!<br>이 선물을 눌러보세요!</div>
+        <p style="margin-top: 20px; color: #666;">(클릭 시 소름끼치는 환영 인사가 시작됨)</p>
     </div>
 
-    <div class="content-box" style="border-color: #a1c4fd;">
-        <h3 style="font-size: 2rem; color: #0984e3; margin-bottom: 0;">🎁 오늘만큼은! 🎁</h3>
-        
-        <img src="내위주.jpg" alt="한 번 사는 인생 내 위주로" class="meme floating">
-        
-        <p style="font-size: 1.6rem; line-height: 1.6;">
-            업무 스트레스 다 잊으시고<br>
-            맛있는 거 왕창 드시고 🍔🍕🍰🍻<br>
-            행복한 하루 보내셨으면 좋겠습니다~!<br>
-        </p>
+    <div id="main-content">
+        <marquee scrollamount="25">🚨삐용삐용🚨 혜린쌤 탄신일!! 구원자 등장!! 모두 길을 비켜라!! 🚨삐용삐용🚨 병원의 빛! 병원의 소금!</marquee>
 
-        <img src="잘먹잘사.jpg" alt="잘 먹고 잘 살자" class="meme pulse-img">
+        <div class="content-box floating">
+            <img src="박수.png" alt="박수" class="meme floating" style="max-width: 300px;">
+            <h1 class="blink-crazy">🎉 혜린쌤 생일 축하해요! 🎉</h1>
+            <img src="오너날.png" alt="오늘 너의 날" class="meme pulse" style="max-width: 400px;">
 
-        <p style="font-size: 1.6rem; line-height: 1.6; margin-top: 30px;">
-            같이 일해주셔서 감사하고<br>
-            <strong>앞으로도 우리 오래오래 같이 있어요...🥺 (질척)</strong><br>
-            생일 진심으로 축하드립니다!!
-        </p>
+            <p class="rainbow-text">
+                제가 감히 존경하고, 사랑하고, 아끼고, 좋아하고, 어쩌고,<br>
+                우러러보고, 신뢰하고, 애정하고, 의지하고, 숭배하고, 저쩌고,<br>
+                평생을 바치고, 찬양하고,<br>
+                내 삶의 빛이자 소금이며 구원자...✨<br>
+                <img src="천강쥐.jpg" alt="천사 강아지" class="meme-small floating">
+            </p>
+            
+            <img src="무한하트.png" alt="하트빔" class="meme shake-crazy">
 
-        <img src="하.png" alt="짠" class="meme shake-crazy" style="max-width: 200px;">
+            <h2 style="font-size: 2.8rem; color: #ff4b4b; text-shadow: 2px 2px #fff; margin-top: 30px;">
+                혜린쌤 없는 병원?<br>
+                🤷‍♀️상상할 수 없슴🤷‍♂️<br>
+                <span style="background: yellow; border-radius: 10px; padding: 0 10px;">🌟혜린쌤이 복지다🌟</span>
+            </h2>
+
+            <p style="font-size: 1.5rem; color: #555; background: #eee; border-radius: 10px; padding: 10px;">
+                아무튼 혜린쌤의 생일을 진심으로 축하합니다. 💖
+            </p>
+        </div>
+
+        <div class="content-box" style="border-color: #a1c4fd;">
+            <h3 style="font-size: 2rem; color: #0984e3;">🎁 오늘만큼은! 🎁</h3>
+            <img src="내위주.jpg" alt="내위주" class="meme floating">
+            
+            <p style="font-size: 1.6rem; line-height: 1.6;">
+                업무 스트레스 다 잊으시고<br>
+                맛있는 거 왕창 드시고 🍔🍕🍰🍻<br>
+                행복한 하루 보내셨으면 좋겠습니다~!<br>
+            </p>
+
+            <img src="잘먹잘사.jpg" alt="잘먹잘사" class="meme pulse">
+
+            <p style="font-size: 1.6rem; line-height: 1.6; margin-top: 30px;">
+                같이 일해주셔서 감사하고<br>
+                <strong>앞으로도 우리 오래오래 같이 있어요...🥺 (질척)</strong><br>
+                생일 진심으로 축하드립니다!!
+            </p>
+            <img src="하.png" alt="짠" class="meme shake-crazy" style="max-width: 200px;">
+        </div>
+
+        <div class="game-section">
+            <h2>🎮 미니게임: 혜린쌤의 선택은? 🎮</h2>
+            <p>혜린쌤, 혹시 퇴사 생각하세요?</p>
+            <button id="runaway-btn" class="btn" onmouseover="runAway(this)">네 (안녕히계세요)</button>
+            <button id="stay-btn" class="btn" onclick="stayForever()">아니요 평생 노예가 되겠습니다🥰</button>
+        </div>
+
+        <div class="content-box floating" style="border-color: #f2d74e;">
+            <h2>🎂 분노의 광클로 케이크를 터트려주세요! 🎂</h2>
+            <div id="cake" onclick="growCake()">🎂</div>
+            <p id="click-count">클릭 횟수: 0</p>
+        </div>
     </div>
 
-    <div class="game-section">
-        <h2 style="color: #333; text-shadow: 1px 1px #fff;">🎮 미니게임: 혜린쌤의 선택은? 🎮</h2>
-        <p style="font-size: 1.2rem; font-weight: bold;">혜린쌤, 혹시 퇴사 생각하세요?</p>
-        <button id="runaway-btn" class="btn" onmouseover="runAway(this)">네 (안녕히계세요)</button>
-        <button id="stay-btn" class="btn" onclick="stayForever()">아니요 평생 병원의 노예가 되겠습니다🥰</button>
-    </div>
-
-    <div class="content-box floating" style="border-color: #f2d74e;">
-        <h2>🎂 분노의 광클로 케이크를 터트려주세요! 🎂</h2>
-        <div id="cake" onclick="growCake()">🎂</div>
-        <p id="click-count" style="font-size: 1.2rem; color: #666;">클릭 횟수: 0 (스트레스 풀고 가세요)</p>
-    </div>
-
-    <div class="easter-egg" onclick="triggerEasterEgg()">여기를 찾으시다니.. (클릭)</div>
+    <div class="easter-egg" onclick="triggerEasterEgg()">비밀 발견.. (클릭)</div>
 
     <script>
-        // 배경에 랜덤 이모지 띄우기
-        const emojis = ['✨', '💖', '🎉', '🔥', '👑', '💸', '🐶', '🫶'];
-        setInterval(() => {
-            const emoji = document.createElement('div');
-            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            emoji.style.position = 'fixed';
-            emoji.style.left = Math.random() * 100 + 'vw';
-            emoji.style.top = '-50px';
-            emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
-            emoji.style.opacity = Math.random() + 0.3;
-            emoji.style.transition = 'top 3s linear';
-            emoji.style.zIndex = -1;
-            document.body.appendChild(emoji);
-
-            setTimeout(() => {
-                emoji.style.top = '120vh';
-            }, 50);
-
-            setTimeout(() => {
-                emoji.remove();
-            }, 3000);
-        }, 200);
-
-        // 도망치는 버튼 로직
-        function runAway(btn) {
-            const section = document.querySelector('.game-section');
-            const randomX = Math.floor(Math.random() * 70) + 10; 
-            const randomY = Math.floor(Math.random() * 70) + 10; 
+        // 파티 시작 함수
+        function startParty() {
+            // 인트로 숨기기
+            document.getElementById('intro-screen').style.display = 'none';
+            // 메인 보이기
+            document.getElementById('main-content').style.display = 'block';
             
-            btn.style.left = randomX + '%';
-            btn.style.top = randomY + '%';
-        }
-
-        function stayForever() {
-            alert('탁월한 선택이십니다!! 평생 함께해요 쌤 ㅋㅋㅋㅋ 알라뷰 💖');
-            createConfetti();
-        }
-
-        // 케이크 키우기 로직
-        let cakeSize = 5;
-        let clicks = 0;
-        function growCake() {
-            const cake = document.getElementById('cake');
-            const countText = document.getElementById('click-count');
-            clicks++;
-            cakeSize += 1.5;
-            cake.style.transform = `scale(${cakeSize / 5})`;
-            countText.innerText = `클릭 횟수: ${clicks}`;
-
-            if (clicks >= 15) {
-                cake.innerText = '🎊!!생일축하합니다!!🎊';
-                cake.style.fontSize = '3rem';
-                cake.style.transform = 'scale(1)';
-                cake.style.color = '#ff007f';
-                cake.style.animation = 'pulse-img 0.5s infinite';
-                createConfetti();
-                clicks = 0; 
-                cake.onclick = null; 
+            // 폭죽 대량 발생!
+            for(let i=0; i<5; i++) {
+                setTimeout(createConfetti, i * 300);
             }
-        }
-
-        // 이스트에그 로직
-        function triggerEasterEgg() {
-            alert('비밀 메시지: 킹갓제너럴 혜린쌤 생일 축하해요 맛난거 사드릴게욥!! 😎');
+            
+            // 배경 이모지 시작
+            startEmojiRain();
         }
 
         // 폭죽 효과
         function createConfetti() {
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
                 document.body.appendChild(confetti);
 
+                const colors = ['#ff007f', '#ffea00', '#00e5ff', '#ff4b4b', '#4cd137', '#ffffff'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = Math.random() * 100 + 'vh';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
                 confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
                 
                 const animation = confetti.animate([
                     { transform: 'translate3d(0,0,0) scale(1)', opacity: 1 },
-                    { transform: `translate3d(${Math.random()*600 - 300}px, ${Math.random()*600 - 300}px, 0) rotate(${Math.random()*720}deg) scale(0)`, opacity: 0 }
+                    { transform: `translate3d(${Math.random()*800 - 400}px, ${Math.random()*800 - 400}px, 0) rotate(${Math.random()*720}deg) scale(0)`, opacity: 0 }
                 ], {
-                    duration: Math.random() * 1500 + 1000,
+                    duration: Math.random() * 2000 + 1000,
                     easing: 'cubic-bezier(.25,.8,.25,1)'
                 });
-
                 animation.onfinish = () => confetti.remove();
             }
+        }
+
+        // 배경 이모지 비
+        function startEmojiRain() {
+            const emojis = ['✨', '💖', '🎉', '🔥', '👑', '💸', '🐶', '🫶'];
+            setInterval(() => {
+                const emoji = document.createElement('div');
+                emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.position = 'fixed';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '-50px';
+                emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                emoji.style.zIndex = -1;
+                document.body.appendChild(emoji);
+
+                const anim = emoji.animate([
+                    { top: '-50px' },
+                    { top: '110vh' }
+                ], { duration: 3000, easing: 'linear' });
+                anim.onfinish = () => emoji.remove();
+            }, 300);
+        }
+
+        // 도망치는 버튼
+        function runAway(btn) {
+            btn.style.left = Math.random() * 80 + 10 + '%';
+            btn.style.top = Math.random() * 80 + 10 + '%';
+        }
+
+        function stayForever() {
+            alert('역시 혜린쌤!! 평생 우리랑 함께하는걸로 탕탕탕!! 사랑해요💖');
+            createConfetti();
+        }
+
+        // 케이크 로직
+        let clicks = 0;
+        function growCake() {
+            clicks++;
+            const cake = document.getElementById('cake');
+            cake.style.transform = `scale(${1 + clicks * 0.2})`;
+            document.getElementById('click-count').innerText = `클릭 횟수: ${clicks}`;
+            if(clicks >= 15) {
+                cake.innerText = '🎊!!HAPPY BIRTHDAY!!🎊';
+                cake.style.transform = 'scale(1)';
+                cake.onclick = null;
+                createConfetti();
+            }
+        }
+
+        function triggerEasterEgg() {
+            alert('비밀 메시지: 쌤 진짜 오늘 업무 다 던지고 젤 행복해야해요!! 아셨죠? 😎');
         }
     </script>
 </body>
 </html>
-
-
