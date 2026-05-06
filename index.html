@@ -105,6 +105,26 @@
         @keyframes rainbow-anim {
             to { filter: hue-rotate(360deg); }
         }
+        
+   /* ⭐ 왕따시만한 혜린 선생님 텍스트 효과 ⭐ */
+        .huge-name {
+            font-size: clamp(3rem, 12vw, 5rem); /* 모바일 화면에 맞춰 자동으로 꽉 차게 커짐 */
+            color: #ffeb3b; /* 쨍한 노란색 */
+            font-weight: 900;
+            margin: 20px 0;
+            text-shadow: 
+                -2px -2px 0 #ff007f,  
+                 2px -2px 0 #ff007f,
+                -2px  2px 0 #ff007f,
+                 2px  2px 0 #ff007f,
+                 5px  5px 0 #bc13fe; /* 핫핑크/보라색 테두리 및 그림자 */
+            animation: scale-pulse 0.6s infinite alternate ease-in-out;
+        }
+
+        @keyframes scale-pulse {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.15) rotate(2deg); }
+        }
 
         .blink-crazy {
             animation: blinker 0.2s linear infinite;
