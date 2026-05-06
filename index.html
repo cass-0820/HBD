@@ -277,16 +277,16 @@
     <script>
         // 파티 시작!
         function startParty(event) {
+            const bgm = document.getElementById('bgm');
+            bgm.play().catch(e => {
+                console.log("노래 재생 실패 (파일 이름이나 경로 확인):", e);
+            });
+
             document.getElementById('intro-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
-            
-            // 입장 축포 (중앙 기준 사방으로)
             for(let i=0; i<8; i++) {
-                setTimeout(() => {
-                    createConfetti(window.innerWidth / 2, window.innerHeight / 2);
-                }, i * 150);
+                setTimeout(() => { createConfetti(window.innerWidth / 2, window.innerHeight / 2); }, i * 150);
             }
-            
             setInterval(createEmojiRain, 500);
         }
 
