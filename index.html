@@ -17,7 +17,6 @@
             text-align: center;
             word-break: keep-all;
             background-color: #ffdef2;
-            /* 모바일 클릭 시 파란색 박스 생기는 것 방지 */
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
         }
@@ -51,14 +50,13 @@
             background: radial-gradient(circle, #ffffff 0%, #ff99cc 100%);
         }
 
-        /* ✨ 새로 추가된 인트로 동숲 이미지 스타일 ✨ */
         .intro-image {
             width: 85%;
             max-width: 400px;
             border-radius: 20px;
-            border: 6px solid #fff; /* 하얀색 예쁜 테두리 */
-            box-shadow: 0 10px 30px rgba(255, 0, 127, 0.3); /* 핑크빛 그림자 */
-            animation: floating-intro 2.5s ease-in-out infinite; /* 둥둥 떠다니는 효과 */
+            border: 6px solid #fff;
+            box-shadow: 0 10px 30px rgba(255, 0, 127, 0.3);
+            animation: floating-intro 2.5s ease-in-out infinite;
             margin-bottom: 20px;
         }
 
@@ -67,10 +65,9 @@
             50% { transform: translateY(-15px); }
         }
 
-        /* 메인 컨텐츠 숨김 */
         #main-content { display: none; }
 
-        /* 상단 움직이는 바 (속도 상향) */
+        /* 상단 움직이는 바 */
         .marquee-container {
             width: 100%;
             overflow: hidden;
@@ -112,34 +109,24 @@
             to { filter: hue-rotate(360deg); }
         }
         
-        /* ✨ 천사처럼 빛나는 왕따시만한 혜린 선생님 텍스트 ✨ */
+        /* 혜린 선생님 텍스트 */
         .angelic-name {
-            font-size: clamp(2.5rem, 12vw, 4.5rem); /* 모바일 화면에 맞게 꽉 차게 커짐 */
+            font-size: clamp(2.5rem, 12vw, 4.5rem);
             font-weight: bold;
-            color: #ffffff; /* 하얀색 텍스트 */
+            color: #ffffff;
             margin: 25px 0;
             display: block;
             animation: holy-glow 1.5s ease-in-out infinite alternate;
         }
 
-        /* 후광이 반짝이는 성스러운 애니메이션 */
         @keyframes holy-glow {
             0% {
-                text-shadow: 
-                    0 0 10px #fff, 
-                    0 0 20px #fff, 
-                    0 0 30px #ffd700, 
-                    0 0 40px #ffd700;
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffd700, 0 0 40px #ffd700;
                 transform: scale(1);
             }
             100% {
-                text-shadow: 
-                    0 0 20px #fff, 
-                    0 0 30px #ffdf00, 
-                    0 0 40px #ffae42, 
-                    0 0 50px #ffae42, 
-                    0 0 70px #ffae42;
-                transform: scale(1.08); /* 살짝 커졌다 작아지는 효과 */
+                text-shadow: 0 0 20px #fff, 0 0 30px #ffdf00, 0 0 40px #ffae42, 0 0 50px #ffae42, 0 0 70px #ffae42;
+                transform: scale(1.08);
             }
         }
 
@@ -194,41 +181,37 @@
 
         #cake { font-size: 5rem; cursor: pointer; user-select: none; display: inline-block; transition: transform 0.1s; }
 
-        /* 폭죽 및 입자 */
-        .confetti {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            border-radius: 50%;
-        }
+        .confetti { position: fixed; pointer-events: none; z-index: 10000; border-radius: 50%; }
+        .emoji-particle { position: fixed; pointer-events: none; z-index: 9999; }
         
-        .emoji-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
+        .blink-crazy {
+            animation: blinker 0.2s linear infinite;
+            color: #ff007f;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px #fff;
         }
-        /* --- Step 1: 비밀 강아지 팝업 스타일 추가 --- */
-        /* 팝업창 배경 (어둡게) */
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        /* ⭐ 강아지 팝업창 스타일 추가 ⭐ */
         #dog-popup {
-            display: none; /* 평소에는 숨김 */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* 배경을 어둡게 */
-            z-index: 10000; /* 가장 위에 뜨게 */
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
             justify-content: center;
             align-items: center;
-            cursor: pointer; /* 배경 클릭 시 닫히도록 */
+            cursor: pointer;
         }
 
-        /* 팝업 내용물 컨테이너 */
         .dog-popup-content {
             background-color: white;
             padding: 20px;
             border-radius: 20px;
-            max-width: 90%;
+            max-width: 85%;
             max-height: 90%;
             border: 5px solid #fff;
             box-shadow: 0 0 20px rgba(255, 102, 178, 0.5);
@@ -236,19 +219,25 @@
             animation: popup-anim 0.3s ease-out;
         }
 
-        /* 강아지 사진 스타일 */
         .dog-image {
             max-width: 100%;
-            max-height: 70vh; /* 화면 높이의 70%까지만 */
+            max-height: 60vh;
             border-radius: 15px;
             margin-top: 15px;
             border: 2px solid #eee;
         }
 
-        /* 팝업 나타날 때 애니메이션 */
         @keyframes popup-anim {
             from { transform: scale(0.7); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
+        }
+        
+        .easter-egg {
+            margin: 20px 0 50px 0;
+            font-size: 14px;
+            color: rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: inline-block;
         }
     </style>
 </head>
@@ -298,8 +287,7 @@
         <div class="content-box" style="border-color: #a1c4fd;">
             <img src="내위주.jpg" alt="내위주" class="meme">
             <h3 style="color: #0099ff; font-size: 1.5rem;">🎁 오늘만큼은! 🎁</h3>
-            <p style="font-size: 1.3rem;">업무 스트레스 다 잊으시고!<br>맛있는 거 왕창 드시고 🍔🍕🍰🍻<br>행복한 하루 보내셨으면 좋겠습니다.💕<br>진짜루다가 늘 감사하고 고마우이...🥹
-</p>
+            <p style="font-size: 1.3rem;">업무 스트레스 다 잊으시고!<br>맛있는 거 왕창 드시고 🍔🍕🍰🍻<br>행복한 하루 보내셨으면 좋겠습니다.💕<br>진짜루다가 늘 감사하고 고마우이...🥹</p>
             <img src="잘먹잘사.jpg" alt="잘먹잘사" class="meme">
             <p style="margin-top: 20px;">
                 앞으로도 우리 오래오래 같이 있어요...🥺<br>
@@ -319,27 +307,26 @@
             <div id="cake" onclick="growCake(event)">🎂</div>
             <p id="click-count" style="font-size: 1.2rem;">클릭: 0</p>
         </div>
+        
+        <div class="easter-egg" onclick="triggerEasterEgg(event)">비밀... (클릭)</div>
     </div>
 
-        // --- Step 3: 스크립트 수정 (기존 함수 교체 및 닫기 함수 추가) ---
-        
-        // 비밀... 클릭 시 팝업 열기
-        function triggerEasterEgg() {
-            // alert 대신 팝업을 보여줍니다.
-            document.getElementById('dog-popup').style.display = 'flex';
-        }
-
-        // 팝업 닫기 함수
-        function closeDogPopup() {
-            document.getElementById('dog-popup').style.display = 'none';
-        }
+    <div id="dog-popup" onclick="closeDogPopup()">
+        <div class="dog-popup-content" onclick="event.stopPropagation()">
+            <p style="font-size: 1.3rem; color: #333; margin: 0;">드릴 건 없고</p>
+            <p style="font-size: 1.5rem; color: #ff007f; margin: 5px 0 15px 0;">귀여운 해피 강아지를 드립니다.🫶</p>
+            
+            <img src="해피독.jpg" alt="해피 강아지" class="dog-image">
+            
+            <p style="color: #888; font-size: 0.9rem; margin-top: 15px;">(화면 아무데나 클릭하여 닫기)</p>
+        </div>
+    </div>
 
     <script>
-        // 파티 시작!
         function startParty(event) {
             const bgm = document.getElementById('bgm');
             bgm.play().catch(e => {
-                console.log("노래 재생 실패 (파일 이름이나 경로 확인):", e);
+                console.log("노래 재생 실패:", e);
             });
 
             document.getElementById('intro-screen').style.display = 'none';
@@ -350,7 +337,6 @@
             setInterval(createEmojiRain, 500);
         }
 
-        // 터치/클릭 좌표를 모두 지원하는 폭죽 실행 함수
         function burstConfetti(e) {
             let x, y;
             if (e.type === 'touchstart') {
@@ -360,43 +346,30 @@
                 x = e.clientX;
                 y = e.clientY;
             }
-            
-            // 좌표가 유효할 때만 생성
             if (x && y) createConfetti(x, y);
         }
 
-        // 폭죽 생성 로직
         function createConfetti(x, y) {
             const colors = ['#ff007f', '#ffea00', '#00e5ff', '#ff4b4b', '#4cd137', '#ffffff', '#ff9900', '#bc13fe'];
-            // 모바일 성능을 고려하여 개수 조절 (30개)
             for (let i = 0; i < 30; i++) {
                 const p = document.createElement('div');
                 p.classList.add('confetti');
                 document.body.appendChild(p);
-
                 const size = Math.random() * 8 + 4 + 'px';
-                p.style.width = size;
-                p.style.height = size;
+                p.style.width = size; p.style.height = size;
                 p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                p.style.left = x + 'px';
-                p.style.top = y + 'px';
-
+                p.style.left = x + 'px'; p.style.top = y + 'px';
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = Math.random() * 120 + 40;
                 const tx = Math.cos(angle) * velocity;
                 const ty = Math.sin(angle) * velocity;
-
                 p.animate([
                     { transform: 'translate(0, 0) scale(1)', opacity: 1 },
                     { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
-                ], { 
-                    duration: 800 + Math.random() * 400, 
-                    easing: 'cubic-bezier(0, .9, .57, 1)' 
-                }).onfinish = () => p.remove();
+                ], { duration: 800 + Math.random() * 400, easing: 'cubic-bezier(0, .9, .57, 1)' }).onfinish = () => p.remove();
             }
         }
 
-        // 배경 이모지 비
         function createEmojiRain() {
             const emojis = ['✨', '💖', '🎉', '👑', '🎂', '💸', '🫶', '🌈'];
             const e = document.createElement('div');
@@ -406,7 +379,6 @@
             e.style.top = '-50px';
             e.style.fontSize = Math.random() * 20 + 20 + 'px';
             document.body.appendChild(e);
-
             e.animate([
                 { top: '-50px', transform: 'rotate(0deg)' },
                 { top: '110vh', transform: `rotate(${Math.random() * 360}deg)` }
@@ -419,7 +391,7 @@
         }
 
         function stayForever(e) {
-            e.stopPropagation(); // 바디 클릭 이벤트 중복 방지
+            e.stopPropagation();
             alert('역시 혜린쌤!! 평생 교환실과 함께하는걸로 탕탕탕!! 😂😂😂💖');
             const x = e.clientX || window.innerWidth / 2;
             const y = e.clientY || window.innerHeight / 2;
@@ -435,9 +407,9 @@
             document.getElementById('click-count').innerText = `클릭: ${count}`;
             
             if(count % 3 === 0) {
-                const x = e.clientX || e.touches[0].clientX;
-                const y = e.clientY || e.touches[0].clientY;
-                createConfetti(x, y);
+                const x = e.clientX || (e.touches && e.touches[0].clientX);
+                const y = e.clientY || (e.touches && e.touches[0].clientY);
+                if(x && y) createConfetti(x, y);
             }
 
             if(count >= 15) {
@@ -451,18 +423,16 @@
             }
         }
 
-        function triggerEasterEgg() {
-            alert('생일 축하해요 맛난거 사드릴게욥!! 😎');
+        // ⭐ 팝업창을 여는 스크립트 ⭐
+        function triggerEasterEgg(event) {
+            event.stopPropagation(); // 배경 클릭 폭죽 이벤트 막기
+            document.getElementById('dog-popup').style.display = 'flex';
+        }
+
+        // ⭐ 팝업창을 닫는 스크립트 ⭐
+        function closeDogPopup() {
+            document.getElementById('dog-popup').style.display = 'none';
         }
     </script>
-<div id="dog-popup" onclick="closeDogPopup()">
-        <div class="dog-popup-content" onclick="event.stopPropagation()"> <p style="font-size: 1.3rem; color: #333; margin: 0;">드릴 건 없고</p>
-            <p style="font-size: 1.5rem; color: #ff007f; margin: 5px 0 15px 0;">귀여운 해피 강아지를 드립니다.🫶</p>
-            
-            <img src="해피독.jpg" alt="해피 강아지" class="dog-image">
-            
-            <p style="color: #888; font-size: 0.9rem; margin-top: 15px;">(화면 아무데나 클릭하여 닫기)</p>
-        </div>
-    </div>
 </body>
 </html>
