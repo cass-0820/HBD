@@ -207,6 +207,49 @@
             pointer-events: none;
             z-index: 9999;
         }
+        /* --- Step 1: 비밀 강아지 팝업 스타일 추가 --- */
+        /* 팝업창 배경 (어둡게) */
+        #dog-popup {
+            display: none; /* 평소에는 숨김 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* 배경을 어둡게 */
+            z-index: 10000; /* 가장 위에 뜨게 */
+            justify-content: center;
+            align-items: center;
+            cursor: pointer; /* 배경 클릭 시 닫히도록 */
+        }
+
+        /* 팝업 내용물 컨테이너 */
+        .dog-popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 102, 178, 0.5);
+            text-align: center;
+            animation: popup-anim 0.3s ease-out;
+        }
+
+        /* 강아지 사진 스타일 */
+        .dog-image {
+            max-width: 100%;
+            max-height: 70vh; /* 화면 높이의 70%까지만 */
+            border-radius: 15px;
+            margin-top: 15px;
+            border: 2px solid #eee;
+        }
+
+        /* 팝업 나타날 때 애니메이션 */
+        @keyframes popup-anim {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-animated" onmousedown="burstConfetti(event)" ontouchstart="burstConfetti(event)">
@@ -278,7 +321,18 @@
         </div>
     </div>
 
-    <div class="easter-egg" onclick="triggerEasterEgg()">비밀... (클릭)</div>
+        // --- Step 3: 스크립트 수정 (기존 함수 교체 및 닫기 함수 추가) ---
+        
+        // 비밀... 클릭 시 팝업 열기
+        function triggerEasterEgg() {
+            // alert 대신 팝업을 보여줍니다.
+            document.getElementById('dog-popup').style.display = 'flex';
+        }
+
+        // 팝업 닫기 함수
+        function closeDogPopup() {
+            document.getElementById('dog-popup').style.display = 'none';
+        }
 
     <script>
         // 파티 시작!
@@ -401,5 +455,14 @@
             alert('생일 축하해요 맛난거 사드릴게욥!! 😎');
         }
     </script>
+<div id="dog-popup" onclick="closeDogPopup()">
+        <div class="dog-popup-content" onclick="event.stopPropagation()"> <p style="font-size: 1.3rem; color: #333; margin: 0;">드릴 건 없고</p>
+            <p style="font-size: 1.5rem; color: #ff007f; margin: 5px 0 15px 0;">귀여운 해피 강아지를 드립니다.🫶</p>
+            
+            <img src="해피독.jpg" alt="해피 강아지" class="dog-image">
+            
+            <p style="color: #888; font-size: 0.9rem; margin-top: 15px;">(화면 아무데나 클릭하여 닫기)</p>
+        </div>
+    </div>
 </body>
 </html>
